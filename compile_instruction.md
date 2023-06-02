@@ -8,14 +8,17 @@ This instruction is only for building CPU version. Please refer to paddlepaddle 
 
 ## **Compile For Windows 10**
 
+Create your python environment for compilation. This python env should have the same python version as your build target. If want to build for python3.9, use python3.9 env. Virtualenv is recommended by paddle official while conda env has been tested by Shubo Wang. It is left for the user to chooce.
+
 Activate your python environment and install necessary modules.
 
 ```
+# assuming python env has been activated
 pip install numpy, protobuf, wheel
 pip install ninja
 ```
 
-### A. Compile with Ninja
+### A. Compile with Ninja (Recommanded)
 
 ```
 mkdir build && cd build
