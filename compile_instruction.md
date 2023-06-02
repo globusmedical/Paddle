@@ -18,7 +18,7 @@ pip install numpy, protobuf, wheel
 pip install ninja
 ```
 
-### A. Compile with Ninja (Recommanded)
+### A. Build with Ninja (Recommanded)
 
 ```
 mkdir build && cd build
@@ -26,7 +26,7 @@ cmake .. -GNinja -DWITH_GPU=OFF
 ninja install all
 ```
 
-### B. Compile with cmake and MSVS 2017
+### B. Build with MS Visual Studio 2017
 
 ```
 cmake .. -GNinja -G "Visual Studio 15 2017" -A x64 host=x64 -DWITH_GPU=OFF
