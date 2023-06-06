@@ -35,14 +35,15 @@ def git_commit():
     return str(git_commit)
 
 def _get_version_detail(idx):
-    assert idx < 3, "vesion info consists of %(major)d.%(minor)d.%(patch)d, \
-        so detail index must less than 3"
+    assert idx < 4, "vesion info consists of %(major)d.%(minor)d.%(patch)d.%(postpatch)s, \
+        so detail index must less than 4"
 
     if re.match('@TAG_VERSION_REGEX@', '@PADDLE_VERSION@'):
         version_details = '@PADDLE_VERSION@'.split('.')
 
-        if len(version_details) >= 3:
-            return version_details[idx]
+        assert len(version_details) == 4, "vesion info must consist of %(major)d.%(minor)d.%(patch)d.%(postpatch)s. \
+            Name or tag the branch like 0.0.0.0 and rerun configure and build"
+        return version_details[idx]
 
     return 0
 
@@ -54,6 +55,9 @@ def get_minor():
 
 def get_patch():
     return str(_get_version_detail(2))
+
+def get_postpatch():
+    return str(_get_version_detail(3))
 
 def get_cuda_version():
     if '@WITH_GPU@' == 'ON':
@@ -90,10 +94,11 @@ def is_taged():
 def write_version_py(filename='paddle/version/__init__.py'):
     cnt = '''# THIS FILE IS GENERATED FROM PADDLEPADDLE SETUP.PY
 #
-full_version    = '%(major)d.%(minor)d.%(patch)s'
+full_version    = '%(major)d.%(minor)d.%(patch)s.%(postpatch)s'
 major           = '%(major)d'
 minor           = '%(minor)d'
 patch           = '%(patch)s'
+postpatch       = '%(postpatch)s'
 rc              = '%(rc)d'
 cuda_version    = '%(cuda)s'
 cudnn_version   = '%(cudnn)s'
@@ -117,6 +122,8 @@ def show():
         minor: the minor version of paddle
 
         patch: the patch level version of paddle
+
+        postpatch: the postpatch level version of paddle, forked by globusmedical
         
         rc: whether it's rc version
 
@@ -150,6 +157,7 @@ def show():
         print('major:', major)
         print('minor:', minor)
         print('patch:', patch)
+        print('postpatch:', postpatch)
         print('rc:', rc)
     else:
         print('commit:', commit)
@@ -208,6 +216,7 @@ def cudnn():
             'major': get_major(),
             'minor': get_minor(),
             'patch': get_patch(),
+            'postpatch': get_postpatch(),
             'rc': RC,
             'version': '${PADDLE_VERSION}',
             'cuda': get_cuda_version(),
